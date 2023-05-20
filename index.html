@@ -19,8 +19,13 @@
             const fileInput = document.getElementById('player2-card');
             if (fileInput.files.length === 0) {
               console.log('Please select a file');
-              return;}
+              return;
             }
+          
+            const file = fileInput.files[0];
+            await getPokemonStatsFromAPI(file, 'player2');
+            console.log("Player 2's card uploaded!");
+          }
 
         async function getPokemonStatsFromAPI(file, player) {
             // Load the object detection model
@@ -74,7 +79,9 @@
   img.src = URL.createObjectURL(file);
 }
 
-async function getPokemonStatsFromAPI(imageDataUrl, player) {
+async function getPokemonStatsFromAPI(file, player) {
+    // ...existing code...
+  
     // Send an HTTP request to the Pokemon API to get stats for the detected Pokemon
     const pokemonName = 'pikachu'; // Replace with the actual name of the detected Pokemon
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
