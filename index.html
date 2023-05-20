@@ -25,7 +25,7 @@
             const file = fileInput.files[0];
             await getPokemonStatsFromAPI(file, 'player2');
             console.log("Player 2's card uploaded!");
-          }
+          }        
 
         async function getPokemonStatsFromAPI(file, player) {
             // Load the object detection model
@@ -205,4 +205,3 @@ async function getPokemonStatsFromAPI(file, player) {
         <br>
         <button id="battle-btn" type="button" onclick="battle()">Battle!</button>
     </form>
- 
