@@ -2,30 +2,32 @@
 <html>
 <head>
     <script>
-        async function uploadPlayer1Card() {
-            const fileInput = document.getElementById('player1-card');
-            if (fileInput.files.length === 0) {
-              console.log('Please select a file');
-              return;
-            }
+      async function uploadPlayer1Card() {
+        const fileInput = document.getElementById('player1-card');
+        if (fileInput.files.length === 0) {
+          console.log('Please select a file');
+          return;
+        }
+      
+        const file = fileInput.files[0];
+        const pokemonName = 'pikachu'; // Replace with the actual name of the detected Pokémon
+        await getPokemonStatsFromAPI(file, 'player1', pokemonName);
+        console.log("Player 1's card uploaded!");
+      }
+      
+      async function uploadPlayer2Card() {
+        const fileInput = document.getElementById('player2-card');
+        if (fileInput.files.length === 0) {
+          console.log('Please select a file');
+          return;
+        }
+      
+        const file = fileInput.files[0];
+        const pokemonName = 'charmander'; // Replace with the actual name of the detected Pokémon
+        await getPokemonStatsFromAPI(file, 'player2', pokemonName);
+        console.log("Player 2's card uploaded!");
+      }
           
-            const file = fileInput.files[0];
-            await getPokemonStatsFromAPI(file, 'player1');
-            console.log("Player 1's card uploaded!");
-          }
-          
-
-          async function uploadPlayer2Card() {
-            const fileInput = document.getElementById('player2-card');
-            if (fileInput.files.length === 0) {
-              console.log('Please select a file');
-              return;
-            }
-          
-            const file = fileInput.files[0];
-            await getPokemonStatsFromAPI(file, 'player2');
-            console.log("Player 2's card uploaded!");
-          }        
 
         async function getPokemonStatsFromAPI(file, player) {
             // Load the object detection model
@@ -79,24 +81,24 @@
   img.src = URL.createObjectURL(file);
 }
 
-async function getPokemonStatsFromAPI(file, player) {
-    // ...existing code...
-  
-    // Send an HTTP request to the Pokemon API to get stats for the detected Pokemon
-    const pokemonName = 'pikachu'; // Replace with the actual name of the detected Pokemon
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
-    const pokemonData = await response.json();
-  
-    // Extract the relevant stats from the response and update the UI
-    const hp = pokemonData.stats[0].base_stat;
-    const attack = pokemonData.stats[1].base_stat;
-    const defense = pokemonData.stats[2].base_stat;
-    document.getElementById(`${player}-hp`).value = hp;
-    document.getElementById(`${player}-attack`).value = attack;
-    document.getElementById(`${player}-defense`).value = defense;
-  
-    return { hp, attack, defense };
-  }
+async function getPokemonStatsFromAPI(file, player, pokemonName) {
+  // ...existing code...
+
+  // Send an HTTP request to the Pokemon API to get stats for the detected Pokemon
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+  const pokemonData = await response.json();
+
+  // Extract the relevant stats from the response and update the UI
+  const hp = pokemonData.stats[0].base_stat;
+  const attack = pokemonData.stats[1].base_stat;
+  const defense = pokemonData.stats[2].base_stat;
+  document.getElementById(`${player}-hp`).value = hp;
+  document.getElementById(`${player}-attack`).value = attack;
+  document.getElementById(`${player}-defense`).value = defense;
+
+  return { hp, attack, defense };
+}
+
   function battle() {
     // Get the Pokemon stats from the input fields
     const player1_hp = parseInt(document.getElementById('player1-hp').value);
@@ -204,4 +206,4 @@ async function getPokemonStatsFromAPI(file, player) {
         </label>
         <br>
         <button id="battle-btn" type="button" onclick="battle()">Battle!</button>
-    </form>
+    </form> 
