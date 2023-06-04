@@ -10,6 +10,15 @@
     <h1>Math Quiz App</h1>
     
     <div>
+        <label for="category">Select Category:</label>
+        <select id="category" onchange="changeCategory()">
+            <option value="all">All</option>
+            <option value="adding">Adding</option>
+            <option value="subtracting">Subtracting</option>
+        </select>
+    </div>
+    
+    <div>
         <label for="difficulty">Select Difficulty:</label>
         <select id="difficulty" onchange="changeDifficulty()">
             <option value="easy">Easy</option>
@@ -34,79 +43,112 @@
             {
                 question: "What is 2 + 2?",
                 answer: "4",
-                difficulty: "easy"
+                difficulty: "easy",
+                category: "adding"
             },
             {
                 question: "What is 5 - 3?",
                 answer: "2",
-                difficulty: "easy"
+                difficulty: "easy",
+                category: "subtracting"
             },
             {
                 question: "What is 3 * 4?",
                 answer: "12",
-                difficulty: "easy"
+                difficulty: "easy",
+                category: "multiplying"
             },
             {
-                question: "What is 10 / 2?",
-                answer: "5",
-                difficulty: "easy"
-            },
-            {
-                question: "What is 8 + 7?",
+                question: "What is 10 + 5?",
                 answer: "15",
-                difficulty: "easy"
+                difficulty: "easy",
+                category: "adding"
             },
             {
-                question: "What is the square root of 25?",
+                question: "What is 7 - 2?",
                 answer: "5",
-                difficulty: "medium"
+                difficulty: "easy",
+                category: "subtracting"
             },
             {
                 question: "What is 4 * 6?",
                 answer: "24",
-                difficulty: "medium"
+                difficulty: "easy",
+                category: "multiplying"
             },
             {
-                question: "What is 12 / 3?",
-                answer: "4",
-                difficulty: "medium"
+                question: "What is 8 + 3?",
+                answer: "11",
+                difficulty: "medium",
+                category: "adding"
             },
             {
-                question: "What is 9 + 6?",
-                answer: "15",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 10 - 5?",
+                question: "What is 9 - 4?",
                 answer: "5",
-                difficulty: "medium"
+                difficulty: "medium",
+                category: "subtracting"
             },
             {
-                question: "What is 8 * 7?",
-                answer: "56",
-                difficulty: "hard"
+                question: "What is 5 * 5?",
+                answer: "25",
+                difficulty: "medium",
+                category: "multiplying"
             },
             {
-                question: "What is 18 / 2?",
+                question: "What is 15 + 7?",
+                answer: "22",
+                difficulty: "medium",
+                category: "adding"
+            },
+            {
+                question: "What is 12 - 6?",
+                answer: "6",
+                difficulty: "medium",
+                category: "subtracting"
+            },
+            {
+                question: "What is 6 * 3?",
+                answer: "18",
+                difficulty: "medium",
+                category: "multiplying"
+            },
+            {
+                question: "What is 20 + 8?",
+                answer: "28",
+                difficulty: "hard",
+                category: "adding"
+            },
+            {
+                question: "What is 15 - 7?",
+                answer: "8",
+                difficulty: "hard",
+                category: "subtracting"
+            },
+            {
+                question: "What is 8 * 8?",
+                answer: "64",
+                difficulty: "hard",
+                category: "multiplying"
+            },
+            {
+                question: "What is 30 + 12?",
+                answer: "42",
+                difficulty: "hard",
+                category: "adding"
+            },
+            {
+                question: "What is 18 - 9?",
                 answer: "9",
-                difficulty: "hard"
+                difficulty: "hard",
+                category: "subtracting"
             },
             {
-                question: "What is 7 + 9?",
-                answer: "16",
-                difficulty: "hard"
+                question: "What is 9 * 9?",
+                answer: "81",
+                difficulty: "hard",
+                category: "multiplying"
             },
-            {
-                question: "What is 20 - 6?",
-                answer: "14",
-                difficulty: "hard"
-            },
-            {
-                question: "What is 5 * 8?",
-                answer: "40",
-                difficulty: "hard"
-            },
-            // Add more questions and answers as needed
+            // Add more questions...
         ];
         
         let questions = [];
@@ -119,6 +161,7 @@
         const resultElement = document.getElementById("result");
         const nextButton = document.getElementById("next-btn");
         const difficultySelect = document.getElementById("difficulty");
+        const categorySelect = document.getElementById("category");
         
         function displayQuestion() {
             const question = questions[currentQuestion];
@@ -162,7 +205,21 @@
         
         function changeDifficulty() {
             const selectedDifficulty = difficultySelect.value;
-            questions = allQuestions.filter(question => question.difficulty === selectedDifficulty).slice(0, 5);
+            const selectedCategory = categorySelect.value;
+            questions = allQuestions.filter(question => {
+                return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
+            }).slice(0, 10);
+            currentQuestion = 0;
+            score = 0;
+            displayQuestion();
+        }
+
+        function changeCategory() {
+            const selectedDifficulty = difficultySelect.value;
+            const selectedCategory = categorySelect.value;
+            questions = allQuestions.filter(question => {
+                return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
+            }).slice(0, 10);
             currentQuestion = 0;
             score = 0;
             displayQuestion();
@@ -174,7 +231,10 @@
         
         // Display the first question
         const selectedDifficulty = difficultySelect.value;
-        questions = allQuestions.filter(question => question.difficulty === selectedDifficulty).slice(0, 5);
+        const selectedCategory = categorySelect.value;
+        questions = allQuestions.filter(question => {
+            return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
+        }).slice(0, 10);
         displayQuestion();
     </script>
 </body>
