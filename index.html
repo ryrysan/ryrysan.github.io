@@ -30,131 +30,385 @@
     <div id="question-container">
         <h2 id="question"></h2>
         <input type="text" id="answer" placeholder="Enter your answer">
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="checkAnswer()">Submit</button>
     </div>
     
     <div id="result-container">
         <p id="result"></p>
-        <button id="next-btn">Next Question</button>
+        <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+        <p id="score"></p>
     </div>
     
     <script>
         const allQuestions = [
             {
-                question: "What is 2 + 2?",
-                answer: "4",
-                difficulty: "easy",
-                category: "adding"
+                question: "What is 2 + 1?",
+                answer: "3",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 4 + 9?",
+                answer: "13",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 4 + 4?",
+                answer: "8",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 13 + 5?",
+                answer: "18",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 7 + 6?",
+                answer: "13",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 9 + 11?",
+                answer: "20",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 9 + 7?",
+                answer: "16",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 11 + 12?",
+                answer: "23",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 20 + 10?",
+                answer: "30",
+                category: "adding",
+                difficulty: "easy"
+            },
+            {
+                question: "What is 14 + 9?",
+                answer: "23",
+                category: "adding",
+                difficulty: "easy"
             },
             {
                 question: "What is 5 - 3?",
                 answer: "2",
-                difficulty: "easy",
-                category: "subtracting"
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 3 * 4?",
-                answer: "12",
-                difficulty: "easy",
-                category: "multiplying"
+                question: "What is 23 - 3?",
+                answer: "20",
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 10 + 5?",
-                answer: "15",
-                difficulty: "easy",
-                category: "adding"
+                question: "What is 27 - 26?",
+                answer: "1",
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 7 - 2?",
-                answer: "5",
-                difficulty: "easy",
-                category: "subtracting"
+                question: "What is 16 - 9?",
+                answer: "7",
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 4 * 6?",
-                answer: "24",
-                difficulty: "easy",
-                category: "multiplying"
+                question: "What is 32 - 3?",
+                answer: "29",
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 8 + 3?",
-                answer: "11",
-                difficulty: "medium",
-                category: "adding"
-            },
-            {
-                question: "What is 9 - 4?",
-                answer: "5",
-                difficulty: "medium",
-                category: "subtracting"
-            },
-            {
-                question: "What is 5 * 5?",
-                answer: "25",
-                difficulty: "medium",
-                category: "multiplying"
-            },
-            {
-                question: "What is 15 + 7?",
-                answer: "22",
-                difficulty: "medium",
-                category: "adding"
-            },
-            {
-                question: "What is 12 - 6?",
+                question: "What is 21 - 15?",
                 answer: "6",
-                difficulty: "medium",
-                category: "subtracting"
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 6 * 3?",
-                answer: "18",
-                difficulty: "medium",
-                category: "multiplying"
+                question: "What is 17 - 17?",
+                answer: "0",
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 20 + 8?",
-                answer: "28",
-                difficulty: "hard",
-                category: "adding"
-            },
-            {
-                question: "What is 15 - 7?",
-                answer: "8",
-                difficulty: "hard",
-                category: "subtracting"
-            },
-            {
-                question: "What is 8 * 8?",
-                answer: "64",
-                difficulty: "hard",
-                category: "multiplying"
-            },
-            {
-                question: "What is 30 + 12?",
-                answer: "42",
-                difficulty: "hard",
-                category: "adding"
-            },
-            {
-                question: "What is 18 - 9?",
+                question: "What is 38 - 29?",
                 answer: "9",
-                difficulty: "hard",
-                category: "subtracting"
+                category: "subtracting",
+                difficulty: "easy"
             },
             {
-                question: "What is 9 * 9?",
-                answer: "81",
-                difficulty: "hard",
-                category: "multiplying"
+                question: "What is 49 - 37?",
+                answer: "12",
+                category: "subtracting",
+                difficulty: "easy"
             },
-            // Add more questions...
+            {
+                question: "What is 56 - 5?",
+                answer: "51",
+                category: "subtracting",
+                difficulty: "easy"
+            },
+            // Medium Difficulty
+            {
+                question: "What is 17 + 15?",
+                answer: "32",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 69 + 27?",
+                answer: "96",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 41 + 25?",
+                answer: "66",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 97 + 33?",
+                answer: "130",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 50 + 29?",
+                answer: "79",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 49 + 87?",
+                answer: "136",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 132 + 45?",
+                answer: "177",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 111 + 92?",
+                answer: "203",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 178 + 55?",
+                answer: "233",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 269 + 69?",
+                answer: "338",
+                category: "adding",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 432 - 33?",
+                answer: "399",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 728 - 698?",
+                answer: "30",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 128 - 64?",
+                answer: "64",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 100 - 78?",
+                answer: "22",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 639 - 392?",
+                answer: "247",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 1000 - 999?",
+                answer: "1",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 1234 - 234?",
+                answer: "1000",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 795 - 259?",
+                answer: "536",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 696 - 246?",
+                answer: "450",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            {
+                question: "What is 888 - 499?",
+                answer: "389",
+                category: "subtracting",
+                difficulty: "medium"
+            },
+            // Hard Difficulty
+            {
+                question: "What is 1000 + 1000?",
+                answer: "2000",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 6394 + 2032?",
+                answer: "8426",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 4393 + 4374?",
+                answer: "8767",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 9182 + 1928?",
+                answer: "13210",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 1234 + 1111?",
+                answer: "2345",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 7286 + 1432?",
+                answer: "8718",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 9999 + 9999?",
+                answer: "19998",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 8778 + 1213?",
+                answer: "9991",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 1899 + 6578?",
+                answer: "8477",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 10000 + 254432?",
+                answer: "264432",
+                category: "adding",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 3948 - 3873?",
+                answer: "75",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 2712 - 506?",
+                answer: "2206",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 1000 - 750?",
+                answer: "250",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 1234 - 969?",
+                answer: "265",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 9999 - 4875?",
+                answer: "5124",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 3871 - 3294?",
+                answer: "577",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 1510 - 393?",
+                answer: "1117",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 80000 - 50000?",
+                answer: "30000",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 8943 - 5983?",
+                answer: "2960",
+                category: "subtracting",
+                difficulty: "hard"
+            },
+            {
+                question: "What is 100000 - 99999?",
+                answer: "1",
+                category: "subtracting",
+                difficulty: "hard"
+            }
         ];
-        
+
         let questions = [];
         let currentQuestion = 0;
         let score = 0;
-        
+
         const questionElement = document.getElementById("question");
         const answerInput = document.getElementById("answer");
         const submitButton = document.getElementById("submit-btn");
@@ -162,80 +416,78 @@
         const nextButton = document.getElementById("next-btn");
         const difficultySelect = document.getElementById("difficulty");
         const categorySelect = document.getElementById("category");
-        
+        const scoreElement = document.getElementById("score");
+
+        function generateQuestions(category, difficulty) {
+            questions = allQuestions.filter(
+                question => (
+                    (category === "all" || question.category === category) &&
+                    (difficulty === "all" || question.difficulty === difficulty)
+                )
+            );
+
+            score = 0;
+            currentQuestion = 0;
+
+            scoreElement.textContent = `Score: ${score}`;
+            displayQuestion();
+        }
+
         function displayQuestion() {
             const question = questions[currentQuestion];
             questionElement.textContent = question.question;
         }
-        
+
         function checkAnswer() {
             const userAnswer = answerInput.value;
             const correctAnswer = questions[currentQuestion].answer;
-            
+
             if (userAnswer === correctAnswer) {
                 resultElement.textContent = "Correct!";
-                score++;
+                score += 10; // Add 10 points for each correct answer
             } else {
                 resultElement.textContent = "Incorrect!";
             }
-            
-            answerInput.style.display = "none";
-            submitButton.style.display = "none";
-            
-            resultElement.style.display = "block";
-            nextButton.style.display = "block";
+
+            answerInput.value = "";
+            answerInput.focus();
+
+            submitButton.disabled = true;
+            nextButton.disabled = false;
+
+            scoreElement.textContent = `Score: ${score}`;
         }
-        
+
         function nextQuestion() {
             answerInput.value = "";
-            answerInput.style.display = "block";
-            submitButton.style.display = "block";
-            resultElement.style.display = "none";
-            nextButton.style.display = "none";
-            
+            resultElement.textContent = "";
+
+            submitButton.disabled = false;
+            nextButton.disabled = true;
+
             currentQuestion++;
-            
+
             if (currentQuestion < questions.length) {
                 displayQuestion();
             } else {
                 questionElement.textContent = "Quiz Completed!";
-                resultElement.textContent = `Your Score: ${score}/${questions.length}`;
+                resultElement.textContent = `Your Score: ${score}/${questions.length * 10} (${((score / (questions.length * 10)) * 100).toFixed(2)}%)`;
             }
-        }
-        
-        function changeDifficulty() {
-            const selectedDifficulty = difficultySelect.value;
-            const selectedCategory = categorySelect.value;
-            questions = allQuestions.filter(question => {
-                return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
-            }).slice(0, 10);
-            currentQuestion = 0;
-            score = 0;
-            displayQuestion();
         }
 
         function changeCategory() {
-            const selectedDifficulty = difficultySelect.value;
-            const selectedCategory = categorySelect.value;
-            questions = allQuestions.filter(question => {
-                return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
-            }).slice(0, 10);
-            currentQuestion = 0;
-            score = 0;
-            displayQuestion();
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            generateQuestions(category, difficulty);
         }
-        
-        // Event listeners
-        submitButton.addEventListener("click", checkAnswer);
-        nextButton.addEventListener("click", nextQuestion);
-        
-        // Display the first question
-        const selectedDifficulty = difficultySelect.value;
-        const selectedCategory = categorySelect.value;
-        questions = allQuestions.filter(question => {
-            return (question.difficulty === selectedDifficulty && (selectedCategory === "all" || question.category === selectedCategory));
-        }).slice(0, 10);
-        displayQuestion();
+
+        function changeDifficulty() {
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            generateQuestions(category, difficulty);
+        }
+
+        generateQuestions("all", "easy");
     </script>
 </body>
 </html>
