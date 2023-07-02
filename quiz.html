@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Quiz</title>
+</head>
+<body>
+  <h1>Math Quiz</h1>
+  
+  <div id="question-container">
+    <p id="question"></p>
+  </div>
+  
+  <div id="answer-container">
+    <input type="number" id="answer" placeholder="Enter your answer">
+    <button onclick="checkAnswer()">Submit</button>
+  </div>
+  
+  <div id="result-container">
+    <p id="result"></p>
+    <button onclick="nextQuestion()">Next Question</button>
+  </div>
+  
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const difficulty = urlParams.get('difficulty');
+    
+    const questions = {
+      addition: {
+        easy: [
+          { question: '2 + 3', answer: '5' },
+          { question: '4 + 7', answer: '11' },
+          { question: '2 + 3', answer: '5' },
+          { question: '4 + 7', answer: '11' },
+        ],
+        medium: [
+          { question: '12 + 8', answer: '20' },
+          { question: '15 + 6', answer: '21' },
+          { question: '12 + 8', answer: '20' },
+          { question: '15 + 6', answer: '21' },
+        ],
+        hard: [
+          { question: '25 + 17', answer: '42' },
+          { question: '39 + 48', answer: '87' },
+          { question: '25 + 17', answer: '42' },
+          { question: '39 + 48', answer: '87' },
+        ]
+      },
+      subtraction: {
+        easy: [
+          { question: '8 - 3', answer: '5' },
+          { question: '15 - 7', answer: '8' },
+          { question: '8 - 3', answer: '5' },
+          { question: '15 - 7', answer: '8' },
+        ],
+        medium: [
+          { question: '20 - 12', answer: '8' },
+          { question: '21 - 6', answer: '15' },
+          { question: '20 - 12', answer: '8' },
+          { question: '21 - 6', answer: '15' },
+        ],
+        hard: [
+          { question: '42 - 17', answer: '25' },
+          { question: '87 - 48', answer: '39' },
+          { question: '42 - 17', answer: '25' },
+          { question: '87 - 48', answer: '39' },
+        ]
+      }
+    };
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let currentQuestions;
+    
+    function startQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      
+      if (category === 'all') {
+        currentQuestions = Object.values(questions).flatMap(obj => Object.values(obj)[difficulty]);
+      } else {
+        currentQuestions = questions[category][difficulty];
+      }
+      
+      showQuestion();
+    }
+    
+    function showQuestion() {
+      const questionElement = document.getElementById('question');
+      questionElement.textContent = currentQuestions[currentQuestion].question;
+    }
+    
+    function checkAnswer() {
+      const userAnswer = document.getElementById('answer').value;
+      const correctAnswer = currentQuestions[currentQuestion].answer;
+      
+      const resultElement = document.getElementById('result');
+      if (userAnswer === correctAnswer) {
+        resultElement.textContent = 'Correct!';
+        score++;
+      } else {
+        resultElement.textContent = 'Incorrect!';
+      }
+      
+      document.getElementById('result-container').style.display = 'block';
+      document.getElementById('answer-container').style.display = 'none';
+    }
+    
+    function nextQuestion() {
+      currentQuestion++;
+      
+      if (currentQuestion < currentQuestions.length) {
+        showQuestion();
+        document.getElementById('result-container').style.display = 'none';
+        document.getElementById('answer-container').style.display = 'block';
+        document.getElementById('answer').value = '';
+      } else {
+        showResult();
+      }
+    }
+    
+    function showResult() {
+      const resultElement = document.getElementById('result');
+      resultElement.textContent = `You scored ${score} out of ${currentQuestions.length}.`;
+      
+      document.getElementById('result-container').style.display = 'block';
+      document.getElementById('answer-container').style.display = 'none';
+      document.getElementById('next-button').style.display = 'none';
+    }
+    
+    startQuiz();
+  </script>
+</body>
+</html>
+
