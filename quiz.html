@@ -2,29 +2,92 @@
 <html>
 <head>
   <title>Math Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    #progress {
+      margin-bottom: 20px;
+    }
+
+    #question-container {
+      margin-bottom: 30px;
+    }
+
+    #answer-container {
+      margin-bottom: 30px;
+    }
+
+    #answer {
+      margin-right: 10px;
+      padding: 5px;
+    }
+
+    #result-container {
+      margin-bottom: 30px;
+    }
+
+    #quiz-result {
+      margin-bottom: 30px;
+    }
+
+    #return-button-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
   <h1>Math Quiz</h1>
-  
+  <p id="progress"></p>
+
   <div id="question-container">
     <p id="question"></p>
   </div>
-  
+
   <div id="answer-container">
     <input type="number" id="answer" placeholder="Enter your answer">
-    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="checkAnswer()" class="button">Submit</button>
   </div>
-  
+
   <div id="result-container">
     <p id="result"></p>
-    <button onclick="nextQuestion()">Next Question</button>
+    <button onclick="nextQuestion()" id="next-button" class="button">Next Question</button>
   </div>
-  
+
+  <div id="quiz-result">
+    <p id="points"></p>
+    <p id="correct-answers"></p>
+    <p id="incorrect-answers"></p>
+  </div>
+
+  <div id="return-button-container">
+    <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="button">Return to Main Menu</button>
+  </div>
+
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     const difficulty = urlParams.get('difficulty');
-    
+
     const questions = {
       addition: {
         easy: [
@@ -67,69 +130,99 @@
         ]
       }
     };
-    
+
     let currentQuestion = 0;
     let score = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let questionsAnswered = 0;
     let currentQuestions;
-    
+
     function startQuiz() {
       currentQuestion = 0;
       score = 0;
-      
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      questionsAnswered = 0;
+
       if (category === 'all') {
         currentQuestions = Object.values(questions).flatMap(obj => Object.values(obj)[difficulty]);
       } else {
         currentQuestions = questions[category][difficulty];
       }
-      
+
+      questionsLeft = currentQuestions.length;
       showQuestion();
+      updateProgress();
     }
-    
+
     function showQuestion() {
       const questionElement = document.getElementById('question');
       questionElement.textContent = currentQuestions[currentQuestion].question;
     }
-    
+
     function checkAnswer() {
       const userAnswer = document.getElementById('answer').value;
       const correctAnswer = currentQuestions[currentQuestion].answer;
-      
+
       const resultElement = document.getElementById('result');
       if (userAnswer === correctAnswer) {
         resultElement.textContent = 'Correct!';
-        score++;
+        score += 10;
+        correctAnswers++;
       } else {
         resultElement.textContent = 'Incorrect!';
+        incorrectAnswers++;
       }
-      
+
+      questionsAnswered++;
+
       document.getElementById('result-container').style.display = 'block';
       document.getElementById('answer-container').style.display = 'none';
+      document.getElementById('next-button').disabled = false;
+      document.getElementById('points').textContent = `Points earned: ${score}`;
     }
-    
+
     function nextQuestion() {
       currentQuestion++;
-      
+
       if (currentQuestion < currentQuestions.length) {
         showQuestion();
         document.getElementById('result-container').style.display = 'none';
         document.getElementById('answer-container').style.display = 'block';
         document.getElementById('answer').value = '';
+        document.getElementById('next-button').disabled = true;
+        updateProgress();
       } else {
         showResult();
       }
     }
-    
+
+    function updateProgress() {
+      const questionsAnswered = currentQuestion + 1; // Number of questions answered
+      const progressElement = document.getElementById('progress');
+      progressElement.textContent = `Question ${questionsAnswered} of ${currentQuestions.length}`;
+    }
+
     function showResult() {
       const resultElement = document.getElementById('result');
-      resultElement.textContent = `You scored ${score} out of ${currentQuestions.length}.`;
-      
+      const percentage = Math.min((score / (currentQuestions.length * 10)) * 100, 100);
+      resultElement.textContent = `Your score: ${percentage.toFixed(0)}%`;
+
       document.getElementById('result-container').style.display = 'block';
       document.getElementById('answer-container').style.display = 'none';
       document.getElementById('next-button').style.display = 'none';
+      document.getElementById('return-button').style.display = 'block';
+      document.getElementById('points').textContent = `Points earned: ${score}`;
+      document.getElementById('correct-answers').textContent = `Correct Answers: ${correctAnswers} out of ${currentQuestions.length}`;
+      document.getElementById('incorrect-answers').textContent = `Incorrect Answers: ${incorrectAnswers}`;
     }
-    
+
+    function returnToMainMenu() {
+      window.location.href = 'index.html';
+    }
+
     startQuiz();
   </script>
 </body>
 </html>
-
