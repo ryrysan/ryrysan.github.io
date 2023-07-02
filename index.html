@@ -1,3 +1,5 @@
+Index.html
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,176 +7,32 @@
 
 </head>
 <body>
-    <h1>Math Quiz App</h1>
-    
-    <div>
-        <label for="difficulty">Select Difficulty:</label>
-        <select id="difficulty" onchange="changeDifficulty()">
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
-    </div>
-    
-    <div id="question-container">
-        <h2 id="question"></h2>
-        <input type="text" id="answer" placeholder="Enter your answer">
-        <button id="submit-btn">Submit</button>
-    </div>
-    
-    <div id="result-container">
-        <p id="result"></p>
-        <button id="next-btn">Next Question</button>
-    </div>
-    
-    <script>
-        const allQuestions = [
-            {
-                question: "What is 2 + 2?",
-                answer: "4",
-                difficulty: "easy"
-            },
-            {
-                question: "What is 5 - 3?",
-                answer: "2",
-                difficulty: "easy"
-            },
-            {
-                question: "What is 3 * 4?",
-                answer: "12",
-                difficulty: "easy"
-            },
-            {
-                question: "What is 10 / 2?",
-                answer: "5",
-                difficulty: "easy"
-            },
-            {
-                question: "What is 8 + 7?",
-                answer: "15",
-                difficulty: "easy"
-            },
-            {
-                question: "What is the square root of 25?",
-                answer: "5",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 4 * 6?",
-                answer: "24",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 12 / 3?",
-                answer: "4",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 9 + 6?",
-                answer: "15",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 10 - 5?",
-                answer: "5",
-                difficulty: "medium"
-            },
-            {
-                question: "What is 8 * 7?",
-                answer: "56",
-                difficulty: "hard"
-            },
-            {
-                question: "What is 18 / 2?",
-                answer: "9",
-                difficulty: "hard"
-            },
-            {
-                question: "What is 7 + 9?",
-                answer: "16",
-                difficulty: "hard"
-            },
-            {
-                question: "What is 20 - 6?",
-                answer: "14",
-                difficulty: "hard"
-            },
-            {
-                question: "What is 5 * 8?",
-                answer: "40",
-                difficulty: "hard"
-            },
-            // Add more questions and answers as needed
-        ];
-        
-        let questions = [];
-        let currentQuestion = 0;
-        let score = 0;
-        
-        const questionElement = document.getElementById("question");
-        const answerInput = document.getElementById("answer");
-        const submitButton = document.getElementById("submit-btn");
-        const resultElement = document.getElementById("result");
-        const nextButton = document.getElementById("next-btn");
-        const difficultySelect = document.getElementById("difficulty");
-        
-        function displayQuestion() {
-            const question = questions[currentQuestion];
-            questionElement.textContent = question.question;
-        }
-        
-        function checkAnswer() {
-            const userAnswer = answerInput.value;
-            const correctAnswer = questions[currentQuestion].answer;
-            
-            if (userAnswer === correctAnswer) {
-                resultElement.textContent = "Correct!";
-                score++;
-            } else {
-                resultElement.textContent = "Incorrect!";
-            }
-            
-            answerInput.style.display = "none";
-            submitButton.style.display = "none";
-            
-            resultElement.style.display = "block";
-            nextButton.style.display = "block";
-        }
-        
-        function nextQuestion() {
-            answerInput.value = "";
-            answerInput.style.display = "block";
-            submitButton.style.display = "block";
-            resultElement.style.display = "none";
-            nextButton.style.display = "none";
-            
-            currentQuestion++;
-            
-            if (currentQuestion < questions.length) {
-                displayQuestion();
-            } else {
-                questionElement.textContent = "Quiz Completed!";
-                resultElement.textContent = `Your Score: ${score}/${questions.length}`;
-            }
-        }
-        
-        function changeDifficulty() {
-            const selectedDifficulty = difficultySelect.value;
-            questions = allQuestions.filter(question => question.difficulty === selectedDifficulty).slice(0, 5);
-            currentQuestion = 0;
-            score = 0;
-            displayQuestion();
-        }
-        
-        // Event listeners
-        submitButton.addEventListener("click", checkAnswer);
-        nextButton.addEventListener("click", nextQuestion);
-        
-        // Display the first question
-        const selectedDifficulty = difficultySelect.value;
-        questions = allQuestions.filter(question => question.difficulty === selectedDifficulty).slice(0, 5);
-        displayQuestion();
-    </script>
+  <h1>Math Quiz</h1>
+  
+  <label for="category">Category:</label>
+  <select id="category">
+    <option value="addition">Addition</option>
+    <option value="subtraction">Subtraction</option>
+  </select>
+  
+  <label for="difficulty">Difficulty:</label>
+  <select id="difficulty">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+  
+  <button onclick="startQuiz()">Start Quiz</button>
+  
+  <script>
+    function startQuiz() {
+      const category = document.getElementById('category').value;
+      const difficulty = document.getElementById('difficulty').value;
+      
+      const url = `quiz.html?category=${category}&difficulty=${difficulty}`;
+      window.location.href = url;
+    }
+  </script>
 </body>
 </html>
 
