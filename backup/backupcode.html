@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    
+    h1 {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      margin-right: 5px;
+    }
+    
+    select {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Math Quiz</h1>
+  
+  <label for="category">Category:</label>
+  <select id="category">
+    <option value="addition">Addition</option>
+    <option value="subtraction">Subtraction</option>
+  </select>
+  
+  <label for="difficulty">Difficulty:</label>
+  <select id="difficulty">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+  
+  <br><br>
+  
+  <button onclick="startQuiz()">Start Quiz</button>
+  
+  <script>
+    function startQuiz() {
+      const category = document.getElementById('category').value;
+      const difficulty = document.getElementById('difficulty').value;
+      
+      const url = `quiz.html?category=${category}&difficulty=${difficulty}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
