@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Math Quiz</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+
   <style>
     /* Styles omitted for brevity */
   </style>
@@ -46,6 +48,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     const difficulty = urlParams.get('difficulty');
+    const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
 
     const questions = {
       addition: {
@@ -96,6 +99,7 @@
     let incorrectAnswers = 0;
     let questionsAnswered = 0;
     let currentQuestions;
+    let timerInterval; // Variable to store the interval ID of the timer
 
     function startQuiz() {
       currentQuestion = 0;
@@ -109,11 +113,15 @@
         currentQuestions = questions[category][difficulty];
 
         showQuestion();
-        updateProgress();
 
         // Display the selected options
         document.getElementById('selected-category').textContent = category.charAt(0).toUpperCase() + category.slice(1);
         document.getElementById('selected-difficulty').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+        
+        // Start the timer if showTimer is true
+        if (showTimer) {
+          startTimer();
+        }
       } else {
         // Display an error message
         const errorMessage = 'Invalid category or difficulty';
@@ -153,8 +161,13 @@
 
     function nextQuestion() {
       currentQuestion++;
-
+    
       if (currentQuestion < currentQuestions.length) {
+        // Clear the previous question and answer
+        document.getElementById('question').textContent = '';
+        document.getElementById('answer').value = '';
+        document.getElementById('result').textContent = '';
+    
         showQuestion();
         document.getElementById('result-container').style.display = 'none';
         document.getElementById('answer-container').style.display = 'block';
@@ -169,28 +182,52 @@
       // Hide question and answer containers
       document.getElementById('question-container').style.display = 'none';
       document.getElementById('answer-container').style.display = 'none';
-
+    
       // Show quiz result
       const quizResultElement = document.getElementById('quiz-result');
       quizResultElement.style.display = 'block';
-
-      // Display final score and statistics
-      document.getElementById('points').textContent = `Final Score: ${score}`;
+    
+      // Calculate the percentage
+      const percentage = Math.round((correctAnswers / questionsAnswered) * 100);
+    
+      // Display the percentage
+      document.getElementById('points').textContent = `Percentage: ${percentage}%`;
       document.getElementById('correct-answers').textContent = `Correct Answers: ${correctAnswers}`;
       document.getElementById('incorrect-answers').textContent = `Incorrect Answers: ${incorrectAnswers}`;
-
+    
+      // Stop the timer
+      clearInterval(timerInterval);
+    
       // Show the "Return to Main Menu" button
       document.getElementById('return-button').style.display = 'block';
     }
-
+    
+    function startTimer() {
+      let seconds = 0;
+      let minutes = 0;
+      const timerElement = document.getElementById('timer');
+    
+      timerInterval = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+          seconds = 0;
+          minutes++;
+        }
+    
+        const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    
+        timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+      }, 1000);
+    }
+    
     function returnToMainMenu() {
       // Redirect to the main menu or homepage
       window.location.href = 'index.html';
     }
-
+    
     // Call the startQuiz function when the page loads
     startQuiz();
   </script>
 </body>
 </html>
-
