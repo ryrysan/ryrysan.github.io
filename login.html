@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <!-- Add any CSS styles or external CSS links here -->
+  <style>
+    /* Styles omitted for brevity */
+    body {
+      background-color: #c4a6a6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <br>
+      <input type="submit" value="Login">
+    </form>
+    <p id="loginMessage"></p>
+    <div id="loggedInButtons" style="display: none;">
+      <button onclick="goToIndex()">Go to Index</button>
+    </div>
+    <!-- Add the Register button -->
+    <div class="box">
+      <button onclick="goToRegister()">Register</button>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript Functions
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const enteredUsername = document.getElementById('username').value;
+      const enteredPassword = document.getElementById('password').value;
+
+      // Retrieve stored username and password from local storage
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
+        document.getElementById('loginMessage').textContent = 'You are now logged in.';
+        document.getElementById('loggedInButtons').style.display = 'block'; // Show the button
+      } else {
+        document.getElementById('loginMessage').textContent = 'Incorrect username or password.';
+        document.getElementById('loggedInButtons').style.display = 'none'; // Hide the button
+      }
+    });
+
+    function goToRegister() {
+      window.location.href = 'register.html';
+    }
+
+    function goToIndex() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
