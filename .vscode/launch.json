@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open login.html",
-            "file": "/Users/ryanlee/dev/ryrysan.github.io/login.html"
+            "name": "Open title.html",
+            "file": "/Users/ryanlee/dev/ryrysan.github.io/title.html"
         }
     ]
 }
