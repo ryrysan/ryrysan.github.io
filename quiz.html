@@ -6,228 +6,280 @@
 
   <style>
     /* Styles omitted for brevity */
+    body {
+      background-color: #c4a6a6;
+    }
   </style>
 </head>
 <body>
-  <h1>Math Quiz</h1>
-
-  <div id="selected-options">
-    <p>Selected Category: <span id="selected-category"></span></p>
-    <p>Selected Difficulty: <span id="selected-difficulty"></span></p>
-  </div>
-
-  <div id="timer-container">
-    <p>Timer: <span id="timer">00:00</span></p>
-  </div>
-
-  <div id="question-container">
-    <p id="question"></p>
-  </div>
-
-  <div id="answer-container">
-    <input type="number" id="answer" placeholder="Enter your answer">
-    <button onclick="checkAnswer()" class="button">Submit</button>
-  </div>
-
-  <div id="result-container">
-    <p id="result"></p>
-    <button onclick="nextQuestion()" id="next-button" class="button" disabled>Next Question</button>
-  </div>
-
-  <div id="quiz-result">
-    <p id="points"></p>
-    <p id="correct-answers"></p>
-    <p id="incorrect-answers"></p>
-  </div>
-
-  <div id="return-button-container">
-    <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="button">Return to Main Menu</button>
-  </div>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
-    const difficulty = urlParams.get('difficulty');
-    const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
-
-    const questions = {
-      addition: {
-        easy: [
-          { question: '2 + 3', answer: '5' },
-          { question: '4 + 7', answer: '11' },
-          { question: '2 + 3', answer: '5' },
-          { question: '4 + 7', answer: '11' },
-        ],
-        medium: [
-          { question: '12 + 8', answer: '20' },
-          { question: '15 + 6', answer: '21' },
-          { question: '12 + 8', answer: '20' },
-          { question: '15 + 6', answer: '21' },
-        ],
-        hard: [
-          { question: '25 + 17', answer: '42' },
-          { question: '39 + 48', answer: '87' },
-          { question: '25 + 17', answer: '42' },
-          { question: '39 + 48', answer: '87' },
-        ]
-      },
-      subtraction: {
-        easy: [
-          { question: '8 - 3', answer: '5' },
-          { question: '15 - 7', answer: '8' },
-          { question: '8 - 3', answer: '5' },
-          { question: '15 - 7', answer: '8' },
-        ],
-        medium: [
-          { question: '20 - 12', answer: '8' },
-          { question: '21 - 6', answer: '15' },
-          { question: '20 - 12', answer: '8' },
-          { question: '21 - 6', answer: '15' },
-        ],
-        hard: [
-          { question: '42 - 17', answer: '25' },
-          { question: '87 - 48', answer: '39' },
-          { question: '42 - 17', answer: '25' },
-          { question: '87 - 48', answer: '39' },
-        ]
+  <!-- Your existing HTML content here -->
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Math Quiz</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+  
+    <style>
+      /* Styles omitted for brevity */
+      body {
+        background-color: #c4a6a6;
       }
-    };
-
-    let currentQuestion = 0;
-    let score = 0;
-    let correctAnswers = 0;
-    let incorrectAnswers = 0;
-    let questionsAnswered = 0;
-    let currentQuestions;
-    let timerInterval; // Variable to store the interval ID of the timer
-
-    function startQuiz() {
-      currentQuestion = 0;
-      score = 0;
-      correctAnswers = 0;
-      incorrectAnswers = 0;
-      questionsAnswered = 0;
-
-      // Check if the category and difficulty values are valid
-      if (category && questions[category] && questions[category][difficulty]) {
-        currentQuestions = questions[category][difficulty];
-
-        showQuestion();
-
-        // Display the selected options
-        document.getElementById('selected-category').textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        document.getElementById('selected-difficulty').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-        
-        // Start the timer if showTimer is true
-        if (showTimer) {
-          startTimer();
+    </style>
+  </head>
+  <body>
+    <h1>Math Quiz</h1>
+  
+    <div id="selected-options">
+      <p>Selected Category: <span id="selected-category"></span></p>
+      <p>Selected Difficulty: <span id="selected-difficulty"></span></p>
+    </div>
+  
+    <div id="timer-container">
+      <p>Timer: <span id="timer">00:00</span></p>
+    </div>
+  
+    <div id="question-container">
+      <p id="question"></p>
+    </div>
+  
+    <div id="answer-container">
+      <input type="number" id="answer" placeholder="Enter your answer">
+      <button onclick="checkAnswer()" class="button">Submit</button>
+    </div>
+  
+    <div id="result-container">
+      <p id="result"></p>
+      <button onclick="nextQuestion()" id="next-button" class="button" disabled>Next Question</button>
+    </div>
+  
+    <div id="quiz-result">
+      <p id="points"></p>
+      <p id="correct-answers"></p>
+      <p id="incorrect-answers"></p>
+      <p id="feedback"></p> <!-- New div for the chatbot feedback -->
+    </div>
+  
+    <div id="return-button-container">
+      <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="button">Return to Main Menu</button>
+    </div>
+  
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get('category');
+      const difficulty = urlParams.get('difficulty');
+      const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
+  
+      const questions = {
+        addition: {
+          easy: [
+            { question: '2 + 3', answer: '5' },
+            { question: '4 + 7', answer: '11' },
+            { question: '2 + 3', answer: '5' },
+            { question: '4 + 7', answer: '11' },
+          ],
+          medium: [
+            { question: '12 + 8', answer: '20' },
+            { question: '15 + 6', answer: '21' },
+            { question: '12 + 8', answer: '20' },
+            { question: '15 + 6', answer: '21' },
+          ],
+          hard: [
+            { question: '25 + 17', answer: '42' },
+            { question: '39 + 48', answer: '87' },
+            { question: '25 + 17', answer: '42' },
+            { question: '39 + 48', answer: '87' },
+          ]
+        },
+        subtraction: {
+          easy: [
+            { question: '8 - 3', answer: '5' },
+            { question: '15 - 7', answer: '8' },
+            { question: '8 - 3', answer: '5' },
+            { question: '15 - 7', answer: '8' },
+          ],
+          medium: [
+            { question: '20 - 12', answer: '8' },
+            { question: '21 - 6', answer: '15' },
+            { question: '20 - 12', answer: '8' },
+            { question: '21 - 6', answer: '15' },
+          ],
+          hard: [
+            { question: '42 - 17', answer: '25' },
+            { question: '87 - 48', answer: '39' },
+            { question: '42 - 17', answer: '25' },
+            { question: '87 - 48', answer: '39' },
+          ]
         }
-      } else {
-        // Display an error message
-        const errorMessage = 'Invalid category or difficulty';
-        document.getElementById('question').textContent = errorMessage;
-        document.getElementById('result-container').style.display = 'none';
+      };
+  
+      let currentQuestion = 0;
+      let score = 0;
+      let correctAnswers = 0;
+      let incorrectAnswers = 0;
+      let questionsAnswered = 0;
+      let currentQuestions;
+      let timerInterval; // Variable to store the interval ID of the timer
+  
+      function startQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        correctAnswers = 0;
+        incorrectAnswers = 0;
+        questionsAnswered = 0;
+  
+        // Check if the category and difficulty values are valid
+        if (category && questions[category] && questions[category][difficulty]) {
+          currentQuestions = questions[category][difficulty];
+  
+          showQuestion();
+  
+          // Display the selected options
+          document.getElementById('selected-category').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+          document.getElementById('selected-difficulty').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+          
+          // Start the timer if showTimer is true
+          if (showTimer) {
+            startTimer();
+          }
+        } else {
+          // Display an error message
+          const errorMessage = 'Invalid category or difficulty';
+          document.getElementById('question').textContent = errorMessage;
+          document.getElementById('result-container').style.display = 'none';
+          document.getElementById('answer-container').style.display = 'none';
+          document.getElementById('next-button').style.display = 'none';
+        }
+      }
+  
+      function showQuestion() {
+        const questionElement = document.getElementById('question');
+        questionElement.textContent = currentQuestions[currentQuestion].question;
+      }
+  
+      function checkAnswer() {
+        const userAnswer = document.getElementById('answer').value;
+        const correctAnswer = currentQuestions[currentQuestion].answer;
+  
+        const resultElement = document.getElementById('result');
+        if (userAnswer === correctAnswer) {
+          resultElement.textContent = 'Correct!';
+          score += 10;
+          correctAnswers++;
+        } else {
+          resultElement.textContent = 'Incorrect!';
+          incorrectAnswers++;
+        }
+  
+        questionsAnswered++;
+  
+        document.getElementById('result-container').style.display = 'block';
         document.getElementById('answer-container').style.display = 'none';
-        document.getElementById('next-button').style.display = 'none';
+        document.getElementById('next-button').disabled = false;
+        document.getElementById('points').textContent = `Points earned: ${score}`;
       }
-    }
-
-    function showQuestion() {
-      const questionElement = document.getElementById('question');
-      questionElement.textContent = currentQuestions[currentQuestion].question;
-    }
-
-    function checkAnswer() {
-      const userAnswer = document.getElementById('answer').value;
-      const correctAnswer = currentQuestions[currentQuestion].answer;
-
-      const resultElement = document.getElementById('result');
-      if (userAnswer === correctAnswer) {
-        resultElement.textContent = 'Correct!';
-        score += 10;
-        correctAnswers++;
-      } else {
-        resultElement.textContent = 'Incorrect!';
-        incorrectAnswers++;
-      }
-
-      questionsAnswered++;
-
-      document.getElementById('result-container').style.display = 'block';
-      document.getElementById('answer-container').style.display = 'none';
-      document.getElementById('next-button').disabled = false;
-      document.getElementById('points').textContent = `Points earned: ${score}`;
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
-    
-      if (currentQuestion < currentQuestions.length) {
-        // Clear the previous question and answer
-        document.getElementById('question').textContent = '';
-        document.getElementById('answer').value = '';
-        document.getElementById('result').textContent = '';
-    
-        showQuestion();
-        document.getElementById('result-container').style.display = 'none';
-        document.getElementById('answer-container').style.display = 'block';
-        document.getElementById('next-button').disabled = true;
-      } else {
-        // Quiz completed
-        showQuizResult();
-      }
-    }
-
-    function showQuizResult() {
-      // Hide question and answer containers
-      document.getElementById('question-container').style.display = 'none';
-      document.getElementById('answer-container').style.display = 'none';
-    
-      // Show quiz result
-      const quizResultElement = document.getElementById('quiz-result');
-      quizResultElement.style.display = 'block';
-    
-      // Calculate the percentage
-      const percentage = Math.round((correctAnswers / questionsAnswered) * 100);
-    
-      // Display the percentage
-      document.getElementById('points').textContent = `Percentage: ${percentage}%`;
-      document.getElementById('correct-answers').textContent = `Correct Answers: ${correctAnswers}`;
-      document.getElementById('incorrect-answers').textContent = `Incorrect Answers: ${incorrectAnswers}`;
-    
-      // Stop the timer
-      clearInterval(timerInterval);
-    
-      // Show the "Return to Main Menu" button
-      document.getElementById('return-button').style.display = 'block';
-    }
-    
-    function startTimer() {
-      let seconds = 0;
-      let minutes = 0;
-      const timerElement = document.getElementById('timer');
-    
-      timerInterval = setInterval(() => {
-        seconds++;
-        if (seconds === 60) {
-          seconds = 0;
-          minutes++;
+  
+      function nextQuestion() {
+        currentQuestion++;
+      
+        if (currentQuestion < currentQuestions.length) {
+          // Clear the previous question and answer
+          document.getElementById('question').textContent = '';
+          document.getElementById('answer').value = '';
+          document.getElementById('result').textContent = '';
+      
+          showQuestion();
+          document.getElementById('result-container').style.display = 'none';
+          document.getElementById('answer-container').style.display = 'block';
+          document.getElementById('next-button').disabled = true;
+        } else {
+          // Quiz completed
+          showQuizResult();
         }
-    
-        const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    
-        timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
-      }, 1000);
-    }
-    
-    function returnToMainMenu() {
-      // Redirect to the main menu or homepage
-      window.location.href = 'index.html';
-    }
-    
-    // Call the startQuiz function when the page loads
-    startQuiz();
+      }
+  
+      function showQuizResult() {
+        // Hide question and answer containers
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('answer-container').style.display = 'none';
+      
+        // Show quiz result
+        const quizResultElement = document.getElementById('quiz-result');
+        quizResultElement.style.display = 'block';
+      
+        // Calculate the percentage
+        const percentage = Math.round((correctAnswers / questionsAnswered) * 100);
+      
+        // Display the percentage
+        document.getElementById('points').textContent = `Percentage: ${percentage}%`;
+        document.getElementById('correct-answers').textContent = `Correct Answers: ${correctAnswers}`;
+        document.getElementById('incorrect-answers').textContent = `Incorrect Answers: ${incorrectAnswers}`;
+      
+        // Stop the timer
+        clearInterval(timerInterval);
+      
+        // Show the "Return to Main Menu" button
+        document.getElementById('return-button').style.display = 'block';
+  
+  
+        // Provide feedback using the chatbot
+        provideFeedback();
+  
+  
+      }
+      
+      function startTimer() {
+        let seconds = 0;
+        let minutes = 0;
+        const timerElement = document.getElementById('timer');
+      
+        timerInterval = setInterval(() => {
+          seconds++;
+          if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+          }
+      
+          const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+          const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      
+          timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+        }, 1000);
+      }
+      
+      function returnToMainMenu() {
+        // Redirect to the main menu or homepage
+        window.location.href = 'index.html';
+      }
+  
+  
+      function provideFeedback() {
+        // Calculate the percentage
+        const percentage = Math.round((correctAnswers / questionsAnswered) * 100);
+  
+        // Display the chatbot feedback
+        const feedbackElement = document.getElementById('feedback');
+        let feedbackMessage = '';
+        if (percentage >= 70) {
+          feedbackMessage = "Great job! You've performed well in the quiz. Keep up the good work!";
+        } else if (percentage >= 50) {
+          feedbackMessage = "Not bad! You've done decently in the quiz. Try to improve for better results next time.";
+        } else {
+          feedbackMessage = "It looks like you struggled a bit in the quiz. Don't worry, practice more to improve your performance!";
+        }
+        feedbackElement.textContent = feedbackMessage;
+      }
+      
+  
+      // Call the startQuiz function when the page loads
+      startQuiz();
+    </script>
+  </body>
+  </html>
+  <script>
+    // Existing JavaScript code here
+
+    // Rest of the code remains the same
+    // ...
   </script>
 </body>
 </html>
