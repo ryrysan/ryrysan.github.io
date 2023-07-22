@@ -2,36 +2,7 @@
 <html>
 <head>
   <title>Math Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-    
-    h1 {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      margin-right: 5px;
-    }
-    
-    select {
-      padding: 5px;
-      margin-right: 10px;
-    }
-    
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-      text-decoration: none;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
   <h1>Math Quiz</h1>
@@ -40,7 +11,11 @@
   <select id="category">
     <option value="addition">Addition</option>
     <option value="subtraction">Subtraction</option>
+    <option value="mul">Multiplication</option>
+    <option value="div">Division</option>
   </select>
+  
+  <br><br>
   
   <label for="difficulty">Difficulty:</label>
   <select id="difficulty">
@@ -51,16 +26,50 @@
   
   <br><br>
   
+  <label for="numQuestions">Number of Questions:</label>
+  <input type="number" id="numQuestions" min="1" max="10" value="5">
+  
+  <br><br>
+  
+  <label for="showTimer">Timer:</label>
+  <div class="slider">
+    <input type="checkbox" id="showTimer">
+    <span class="slider-btn"></span>
+  </div>
+  <span class="slider-text on">On</span>
+  <span class="slider-text off">Off</span>
+  
+  <br><br>
+  
   <button onclick="startQuiz()">Start Quiz</button>
   
   <script>
     function startQuiz() {
       const category = document.getElementById('category').value;
       const difficulty = document.getElementById('difficulty').value;
+      var numQuestions = document.getElementById("numQuestions").value;
+      var showTimer = document.getElementById("showTimer").checked;
       
-      const url = `quiz.html?category=${category}&difficulty=${difficulty}`;
+      if (numQuestions < 1 || numQuestions > 10) {
+        alert("Number of questions must be between 1 and 10.");
+        return;
+      }
+      
+      // Redirect to quiz.html with the showTimer parameter
+      const url = `quiz.html?category=${category}&difficulty=${difficulty}&showTimer=${showTimer}`;
       window.location.href = url;
     }
+    
+    // Add event listener to the showTimer checkbox
+    document.getElementById('showTimer').addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('showTimer').nextElementSibling.classList.add('on');
+        document.getElementById('showTimer').nextElementSibling.classList.remove('off');
+      } else {
+        document.getElementById('showTimer').nextElementSibling.classList.add('off');
+        document.getElementById('showTimer').nextElementSibling.classList.remove('on');
+      }
+    });
   </script>
 </body>
 </html>

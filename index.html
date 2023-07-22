@@ -2,17 +2,15 @@
 <html>
 <head>
   <title>Math Quiz</title>
-  <style>
-    /* Styles omitted for brevity */
-  </style>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
   <h1>Math Quiz</h1>
   
   <label for="category">Category:</label>
   <select id="category">
-    <option value="add">Addition</option>
-    <option value="sub">Subtraction</option>
+    <option value="addition">Addition</option>
+    <option value="subtraction">Subtraction</option>
     <option value="mul">Multiplication</option>
     <option value="div">Division</option>
   </select>
@@ -45,10 +43,13 @@
   
   <button onclick="startQuiz()">Start Quiz</button>
   
+  <!-- Add Study Materials Button -->
+  <button onclick="goToStudyMaterials()" class="button">Study Materials</button>
+
   <script>
     function startQuiz() {
-      var category = document.getElementById("category").value;
-      var difficulty = document.getElementById("difficulty").value;
+      const category = document.getElementById('category').value;
+      const difficulty = document.getElementById('difficulty').value;
       var numQuestions = document.getElementById("numQuestions").value;
       var showTimer = document.getElementById("showTimer").checked;
       
@@ -57,9 +58,26 @@
         return;
       }
       
-      // Redirect to quiz.html
-      const url = `quiz.html?category=${category}&difficulty=${difficulty}`;
+      // Redirect to quiz.html with the showTimer parameter
+      const url = `quiz.html?category=${category}&difficulty=${difficulty}&showTimer=${showTimer}`;
+      window.location.href = url;
     }
+
+    function goToStudyMaterials() {
+      // Redirect to the study materials page
+      window.location.href = 'study_materials.html';
+    }
+    
+    // Add event listener to the showTimer checkbox
+    document.getElementById('showTimer').addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('showTimer').nextElementSibling.classList.add('on');
+        document.getElementById('showTimer').nextElementSibling.classList.remove('off');
+      } else {
+        document.getElementById('showTimer').nextElementSibling.classList.add('off');
+        document.getElementById('showTimer').nextElementSibling.classList.remove('on');
+      }
+    });
   </script>
 </body>
 </html>
