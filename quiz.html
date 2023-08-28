@@ -6,9 +6,6 @@
 
   <style>
     /* Styles omitted for brevity */
-    body {
-      background-color: #c4a6a6;
-    }
   </style>
 </head>
 <body>
@@ -41,7 +38,6 @@
     <p id="points"></p>
     <p id="correct-answers"></p>
     <p id="incorrect-answers"></p>
-    <p id="feedback"></p> <!-- New div for the chatbot feedback -->
   </div>
 
   <div id="return-button-container">
@@ -204,9 +200,6 @@
     
       // Show the "Return to Main Menu" button
       document.getElementById('return-button').style.display = 'block';
-
-      // Provide feedback using the chatbot
-      provideFeedback();
     }
     
     function startTimer() {
@@ -231,23 +224,6 @@
     function returnToMainMenu() {
       // Redirect to the main menu or homepage
       window.location.href = 'index.html';
-    }
-
-    function provideFeedback() {
-      // Calculate the percentage
-      const percentage = Math.round((correctAnswers / questionsAnswered) * 100);
-
-      // Display the chatbot feedback
-      const feedbackElement = document.getElementById('feedback');
-      let feedbackMessage = '';
-      if (percentage >= 70) {
-        feedbackMessage = "Great job! You've performed well in the quiz. Keep up the good work!";
-      } else if (percentage >= 50) {
-        feedbackMessage = "Not bad! You've done decently in the quiz. Try to improve for better results next time.";
-      } else {
-        feedbackMessage = "It looks like you struggled a bit in the quiz. Don't worry, practice more to improve your performance!";
-      }
-      feedbackElement.textContent = feedbackMessage;
     }
 
     // Call the startQuiz function when the page loads

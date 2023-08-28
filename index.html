@@ -3,16 +3,15 @@
 <head>
   <title>Math Quiz</title>
   <link rel="stylesheet" type="text/css" href="index.css">
+
   <style>
     /* CSS Styles */
-  
     body {
-      font-family: 'Arial', sans-serif; /* Updated font-family */
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      background-color: #c4a6a6; /* Replace with your desired background color */
+      background-color: #c4a6a6;
     }
-  
-    /* Rest of your CSS code */
+
     .container {
       max-width: 600px;
       margin: 0 auto;
@@ -25,7 +24,7 @@
 
     h1 {
       color: #333;
-      font-family: 'Times New Roman', serif; /* Updated font-family */
+      font-family: 'Times New Roman', serif;
     }
 
     label {
@@ -87,23 +86,10 @@
       margin-top: 20px;
     }
   </style>
-  
-    
-
-
-
 </head>
 <body>
   <div class="container">
-
-    <div class="box">
-      <h1>Math Quiz</h1>
-    </div>
-
-    <div class="box">
-      <p>Welcome to the Math Quiz! Test your math skills and challenge yourself!</p>
-    </div>
-
+    <h1>Math Quiz</h1>
     <div class="box">
       <label for="category">Category:</label>
       <select id="category">
@@ -148,12 +134,9 @@
     <div class="box">
       <button onclick="goToStudyMaterials()" class="button">Study Materials</button>
     </div>
-
   </div>
 
   <script>
-    // JavaScript Functions
-
     function startQuiz() {
       const category = document.getElementById('category').value;
       const difficulty = document.getElementById('difficulty').value;
