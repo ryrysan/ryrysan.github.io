@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open title.html",
-            "file": "/Users/ryanlee/dev/ryrysan.github.io/title.html"
+            "file": "/Users/ryanlee/dev/ryrysan.github.io/title.html",
         }
     ]
 }
