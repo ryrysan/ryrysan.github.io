@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-  <title>Math Quiz</title>
-  <link rel="stylesheet" type="text/css" href="index.css">
-
+  <title>Title Page</title>
+  <!-- Add any CSS styles or external CSS links here -->
   <style>
     /* CSS Styles */
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Arial', sans-serif; /* Updated font-family */
       text-align: center;
-      background-color: #c4a6a6;
+      background-color: #c4a6a6; /* Replace with your desired background color */
     }
 
     .container {
@@ -18,58 +17,13 @@
       padding: 20px;
     }
 
-    .box {
-      margin-bottom: 20px;
-    }
-
     h1 {
       color: #333;
-      font-family: 'Times New Roman', serif;
+      font-family: 'Times New Roman', serif; /* Updated font-family */
     }
 
-    label {
-      display: inline-block;
-      width: 120px;
-      text-align: left;
-      margin-right: 10px;
-    }
-
-    select, input[type="number"] {
-      width: 200px;
-      padding: 5px;
-    }
-
-    .slider {
-      display: inline-block;
-      position: relative;
-      width: 50px;
-      height: 24px;
-      margin-right: 10px;
-    }
-
-    .slider-btn {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 24px;
-      height: 24px;
-      background-color: #ccc;
-      border-radius: 50%;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .slider-text {
-      vertical-align: middle;
-    }
-
-    .slider-text.on {
-      color: green;
-      font-weight: bold;
-    }
-
-    .slider-text.off {
-      color: red;
-      font-weight: bold;
+    .box {
+      margin-bottom: 20px;
     }
 
     button {
@@ -81,93 +35,21 @@
       cursor: pointer;
       font-size: 16px;
     }
-
-    button.button {
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Math Quiz</h1>
+    <h1>Welcome to our Website</h1>
+    <p>This is the title page of our website. Click the button below to login and access the Math Quiz.</p>
     <div class="box">
-      <label for="category">Category:</label>
-      <select id="category">
-        <option value="addition">Addition</option>
-        <option value="subtraction">Subtraction</option>
-        <option value="mul">Multiplication</option>
-        <option value="div">Division</option>
-      </select>
-    </div>
-    <hr>
-
-    <div class="box">
-      <label for="difficulty">Difficulty:</label>
-      <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-    </div>
-    <hr>
-
-    <div class="box">
-      <label for="numQuestions">Number of Questions:</label>
-      <input type="number" id="numQuestions" min="1" max="10" value="5">
-    </div>
-    <hr>
-
-    <div class="box">
-      <label for="showTimer">Timer:</label>
-      <div class="slider">
-        <input type="checkbox" id="showTimer">
-      </div>
-      <span class="slider-text on">On</span>
-      <span class="slider-text off">Off</span>
-    </div>
-
-    <div class="box">
-      <button onclick="startQuiz()">Start Quiz</button>
-    </div>
-
-    <!-- Add Study Materials Button -->
-    <div class="box">
-      <button onclick="goToStudyMaterials()" class="button">Study Materials</button>
+      <button onclick="goToLogin()">Login</button>
     </div>
   </div>
 
   <script>
-    function startQuiz() {
-      const category = document.getElementById('category').value;
-      const difficulty = document.getElementById('difficulty').value;
-      var numQuestions = document.getElementById("numQuestions").value;
-      var showTimer = document.getElementById("showTimer").checked;
-
-      if (numQuestions < 1 || numQuestions > 10) {
-        alert("Number of questions must be between 1 and 10.");
-        return;
-      }
-
-      // Redirect to quiz.html with the showTimer parameter
-      const url = `quiz.html?category=${category}&difficulty=${difficulty}&showTimer=${showTimer}`;
-      window.location.href = url;
+    function goToLogin() {
+      window.location.href = 'login.html';
     }
-
-    function goToStudyMaterials() {
-      // Redirect to the study materials page
-      window.location.href = 'study_materials.html';
-    }
-
-    // Add event listener to the showTimer checkbox
-    document.getElementById('showTimer').addEventListener('change', function() {
-      if (this.checked) {
-        document.getElementById('showTimer').nextElementSibling.classList.add('on');
-        document.getElementById('showTimer').nextElementSibling.classList.remove('off');
-      } else {
-        document.getElementById('showTimer').nextElementSibling.classList.add('off');
-        document.getElementById('showTimer').nextElementSibling.classList.remove('on');
-      }
-    });
   </script>
 </body>
 </html>
