@@ -6,8 +6,8 @@ const openai = new OpenAI({
 });
 const openFun = async() => {
 const chatCompletion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [{"role": "user", "content": "explain how to solve 4 + 7 to a beginner in math"}],
+    model: "gpt-3.5-turbo"
+    messages: [{"role": "user", "content": "can you generate 5 random beginner level addition math questions"}],
     max_tokens:200
   });
 

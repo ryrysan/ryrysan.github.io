@@ -13,120 +13,139 @@
 </head>
 <body>
   <!-- Your existing HTML content here -->
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>Math Quiz</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
+
+  <h1>Math Quiz</h1>
   
-    <style>
-      /* Styles omitted for brevity */
-      body {
-        background-color: #c4a6a6;
+  <div id="selected-options">
+    <p>Selected Category: <span id="selected-category"></span></p>
+    <p>Selected Difficulty: <span id="selected-difficulty"></span></p>
+  </div>
+  
+  <div id="timer-container">
+    <p>Timer: <span id="timer">00:00</span></p>
+  </div>
+  
+  <div id="question-container">
+    <p id="question"></p>
+  </div>
+  
+  <div id="answer-container">
+    <input type="number" id="answer" placeholder="Enter your answer">
+    <div class="button-space"></div>
+    <button onclick="checkAnswer()" class="styled-button">Submit</button>
+  </div>
+  <div class="button-space"></div>
+  <div id="result-container">
+    <button onclick="toggleHelp()" id="help-button" class="styled-button">Need Help?</button>
+    <div class="button-space"></div>
+    <p id="result"></p>
+    <button onclick="nextQuestion()" id="next-button" class="styled-button" style="display: none;">Next Question</button>
+  </div>
+  <button onclick="checkFinalResult()" id="check-result-button" class="styled-button" style="display: none;">Check Your Result</button>
+  <div id="quiz-result">
+    <p id="points"></p>
+    <p id="correct-answers"></p>
+    <p id="incorrect-answers"></p>
+    <p id="feedback"></p> <!-- New div for the chatbot feedback -->
+  </div>
+  
+  <div id="return-button-container">
+    <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="styled-button">Return to Main Menu</button>
+  </div>
+
+  <div id="help-content" style="display: none;">
+    <h1>Need Help?</h1>
+    <p>If you're having trouble with a question, here are some tips to consider:</p>
+    <ul>
+      <li>Double-check your calculations.</li>
+      <li>Read the question carefully to understand what's being asked.</li>
+      <li>Take your time and think through the problem step by step.</li>
+    </ul>
+    <p>If you're still stuck, don't hesitate to ask for assistance from your teacher or a classmate.</p>
+  </div>
+  
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const difficulty = urlParams.get('difficulty');
+    console.log('Category:', category); // Debugging log
+    console.log('Difficulty:', difficulty); // Debugging log
+    const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
+
+    // Your questions object and other variables here
+    const questions = {
+      addition: {
+        easy: [
+          { question: '2 + 3', answer: '5' },
+          { question: '4 + 7', answer: '11' },
+          { question: '1 + 1', answer: '2' },
+          { question: '2 + 7', answer: '9' },
+        ],
+        medium: [
+          { question: '12 + 8', answer: '20' },
+          { question: '15 + 6', answer: '21' },
+          { question: '12 + 8', answer: '20' },
+          { question: '15 + 6', answer: '21' },
+        ],
+        hard: [
+          { question: '25 + 17', answer: '42' },
+          { question: '39 + 48', answer: '87' },
+          { question: '25 + 17', answer: '42' },
+          { question: '39 + 48', answer: '87' },
+        ]
+      },
+      subtraction: {
+        easy: [
+          { question: '8 - 3', answer: '5' },
+          { question: '15 - 7', answer: '8' },
+          { question: '8 - 3', answer: '5' },
+          { question: '15 - 7', answer: '8' },
+        ],
+        medium: [
+          { question: '20 - 12', answer: '8' },
+          { question: '21 - 6', answer: '15' },
+          { question: '20 - 12', answer: '8' },
+          { question: '21 - 6', answer: '15' },
+        ],
+        hard: [
+          { question: '42 - 17', answer: '25' },
+          { question: '87 - 48', answer: '39' },
+          { question: '42 - 17', answer: '25' },
+          { question: '87 - 48', answer: '39' },
+        ]
       }
-    </style>
-  </head>
-  <body>
-    <h1>Math Quiz</h1>
-  
-    <div id="selected-options">
-      <p>Selected Category: <span id="selected-category"></span></p>
-      <p>Selected Difficulty: <span id="selected-difficulty"></span></p>
-    </div>
-  
-    <div id="timer-container">
-      <p>Timer: <span id="timer">00:00</span></p>
-    </div>
-  
-    <div id="question-container">
-      <p id="question"></p>
-    </div>
-  
-    <div id="answer-container">
-      <input type="number" id="answer" placeholder="Enter your answer">
-      <button onclick="checkAnswer()" class="button">Submit</button>
-    </div>
-  
-    <div id="result-container">
-      <p id="result"></p>
-      <button onclick="nextQuestion()" id="next-button" class="button" disabled>Next Question</button>
-    </div>
-  
-    <div id="quiz-result">
-      <p id="points"></p>
-      <p id="correct-answers"></p>
-      <p id="incorrect-answers"></p>
-      <p id="feedback"></p> <!-- New div for the chatbot feedback -->
-    </div>
-  
-    <div id="return-button-container">
-      <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="button">Return to Main Menu</button>
-    </div>
-  
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const category = urlParams.get('category');
-      const difficulty = urlParams.get('difficulty');
-      const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
-  
-      const questions = {
-        addition: {
-          easy: [
-            { question: '2 + 3', answer: '5' },
-            { question: '4 + 7', answer: '11' },
-            { question: '2 + 3', answer: '5' },
-            { question: '4 + 7', answer: '11' },
-          ],
-          medium: [
-            { question: '12 + 8', answer: '20' },
-            { question: '15 + 6', answer: '21' },
-            { question: '12 + 8', answer: '20' },
-            { question: '15 + 6', answer: '21' },
-          ],
-          hard: [
-            { question: '25 + 17', answer: '42' },
-            { question: '39 + 48', answer: '87' },
-            { question: '25 + 17', answer: '42' },
-            { question: '39 + 48', answer: '87' },
-          ]
-        },
-        subtraction: {
-          easy: [
-            { question: '8 - 3', answer: '5' },
-            { question: '15 - 7', answer: '8' },
-            { question: '8 - 3', answer: '5' },
-            { question: '15 - 7', answer: '8' },
-          ],
-          medium: [
-            { question: '20 - 12', answer: '8' },
-            { question: '21 - 6', answer: '15' },
-            { question: '20 - 12', answer: '8' },
-            { question: '21 - 6', answer: '15' },
-          ],
-          hard: [
-            { question: '42 - 17', answer: '25' },
-            { question: '87 - 48', answer: '39' },
-            { question: '42 - 17', answer: '25' },
-            { question: '87 - 48', answer: '39' },
-          ]
-        }
-      };
-  
-      let currentQuestion = 0;
-      let score = 0;
-      let correctAnswers = 0;
-      let incorrectAnswers = 0;
-      let questionsAnswered = 0;
-      let currentQuestions;
-      let timerInterval; // Variable to store the interval ID of the timer
-  
-      function startQuiz() {
+    };
+
+    let currentQuestion = 0;
+    let score = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let questionsAnswered = 0;
+    let timerInterval; // Variable to store the interval ID of the timer
+    
+    function startQuiz() {
+      // Retrieve the stored current question index from Local Storage
+      const storedCurrentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+    
+      if (storedCurrentQuestionIndex !== null) {
+        currentQuestion = parseInt(storedCurrentQuestionIndex);
+      } else {
         currentQuestion = 0;
-        score = 0;
-        correctAnswers = 0;
-        incorrectAnswers = 0;
-        questionsAnswered = 0;
-  
+      }
+
+    
+      // Your startQuiz() function implementation
+      currentQuestion = 0;
+      score = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      questionsAnswered = 0;
+
+      document.getElementById('next-button').style.display = 'none';
+
+    }
+
+    // Your other functions here
         // Check if the category and difficulty values are valid
         if (category && questions[category] && questions[category][difficulty]) {
           currentQuestions = questions[category][difficulty];
@@ -149,7 +168,7 @@
           document.getElementById('answer-container').style.display = 'none';
           document.getElementById('next-button').style.display = 'none';
         }
-      }
+      
   
       function showQuestion() {
         const questionElement = document.getElementById('question');
@@ -159,45 +178,42 @@
       function checkAnswer() {
         const userAnswer = document.getElementById('answer').value;
         const correctAnswer = currentQuestions[currentQuestion].answer;
-  
+      
         const resultElement = document.getElementById('result');
         if (userAnswer === correctAnswer) {
           resultElement.textContent = 'Correct!';
           score += 10;
           correctAnswers++;
+
         } else {
           resultElement.textContent = 'Incorrect!';
           incorrectAnswers++;
-        }
-  
+      } 
         questionsAnswered++;
-  
+      
+        // Display the result
         document.getElementById('result-container').style.display = 'block';
         document.getElementById('answer-container').style.display = 'none';
-        document.getElementById('next-button').disabled = false;
-        document.getElementById('points').textContent = `Points earned: ${score}`;
-      }
-  
-      function nextQuestion() {
-        currentQuestion++;
-      
-        if (currentQuestion < currentQuestions.length) {
-          // Clear the previous question and answer
-          document.getElementById('question').textContent = '';
-          document.getElementById('answer').value = '';
-          document.getElementById('result').textContent = '';
-      
-          showQuestion();
-          document.getElementById('result-container').style.display = 'none';
-          document.getElementById('answer-container').style.display = 'block';
-          document.getElementById('next-button').disabled = true;
+
+        // Show the "Check Your Result" button if it's the last question
+        if (currentQuestion === currentQuestions.length - 1) {
+          document.getElementById('check-result-button').style.display = 'block';
+          document.getElementById('next-button').style.display = 'none'; // Hide the Next Question button
         } else {
-          // Quiz completed
-          showQuizResult();
+          // Show the "Next Question" button for other questions
+          document.getElementById('next-button').style.display = 'block';
+          document.getElementById('check-result-button').style.display = 'none'; // Hide the "Check Your Result" button
         }
       }
-    
+      
+      
+      
+     // function showHelp() {
+        // Redirect to the help page with selected category and difficulty as query parameters
+     //   window.location.href = `help.html?category=${category}&difficulty=${difficulty}`;
+    //  }
 
+      
     function showQuizResult() {
       // Hide question and answer containers
       document.getElementById('question-container').style.display = 'none';
@@ -240,14 +256,99 @@
         timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
       }, 1000);
     }
-    
     function returnToMainMenu() {
       // Redirect to the main menu or homepage
-      window.location.href = 'index.html';
+      window.location.href = 'main_menu.html';
     }
+
+   // let isHelpOpen = false; // Initialize to false
+
+
+// Your existing toggleHelp() function
+//function toggleHelp() {
+ // const helpContent = document.getElementById('help-content');
+//  if (isHelpOpen) {
+ //   helpContent.style.display = 'none';
+ //   document.getElementById('help-button').textContent = 'Need Help?';
+ // } else {
+ //   helpContent.style.display = 'block';
+ //   document.getElementById('help-button').textContent = 'Close Help';
+ // }
+ // isHelpOpen = !isHelpOpen; // Toggle the state
+//}
+
+    function nextQuestion() {
+      // Hide the help message if it's currently visible
+      // hideHelp();
+
+      // Store the current question index in Local Storage
+      localStorage.setItem('currentQuestionIndex', currentQuestion);
+
+      currentQuestion++;
+
+      if (currentQuestion < currentQuestions.length) {
+        // Clear the previous question and answer
+        document.getElementById('question').textContent = '';
+        document.getElementById('answer').value = '';
+        document.getElementById('result').textContent = '';
+
+        showQuestion();
+
+        document.getElementById('result-container').style.display = 'none';
+        document.getElementById('answer-container').style.display = 'block';
     
-    // Call the startQuiz function when the page loads
-    startQuiz();
+        document.getElementById('next-button').style.display = 'block'; // Show the Next Question button
+        document.getElementById('check-result-button').style.display = 'none'; // Hide the "Check Your Result" button
+        
+        if (currentQuestion === currentQuestions.length - 1) {
+          document.getElementById('next-button').style.display = 'none'; // Hide the Next Question button
+          document.getElementById('check-result-button').style.display = 'none'; // Show the "Check Your Result" button
+        } else {
+          document.getElementById('next-button').style.display = 'block'; // Show the Next Question button
+          document.getElementById('check-result-button').style.display = 'none'; // Hide the "Check Your Result" button
+        }
+      } else {
+        // Quiz completed
+        //showQuizResult();
+
+        document.getElementById('next-button').style.display = 'none'; // Hide the Next Question button
+        document.getElementById('check-result-button').style.display = 'block'; // Show the "Check Your Result" button
+      }
+    }
+
+    function checkFinalResult() {
+      // Hide the question container and the "Check Your Result" button
+      document.getElementById('question-container').style.display = 'none';
+      document.getElementById('check-result-button').style.display = 'none';
+    
+      showQuizResult();
+    }
+
+    // Add this function to hide the help content when moving to the next question
+    function hideHelp() {
+    // const helpContent = document.getElementById('help-content');
+    // /helpContent.style.display = 'none';
+    //  document.getElementById('help-button').textContent = 'Need Help?';
+    // isHelpOpen = false;
+    }
+
+    
+    // Inside your existing `showHelp()` function, load the help content into the help container
+   // function showHelp() {
+   //   toggleHelp();
+  //  }
+    
+      //const helpContent = document.getElementById('help-content');
+     //if (isHelpOpen) {
+     //   helpContent.style.display = 'block';
+    //    document.getElementById('help-button').textContent = 'Close Help';
+    //  } else {
+   //     helpContent.style.display = 'none';
+   //     document.getElementById('help-button').textContent = 'Need Help?';
+  //    }
+    
+    
+
   </script>
 </body>
 </html>

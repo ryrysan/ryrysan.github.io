@@ -6,50 +6,60 @@
 
   <style>
     /* Styles omitted for brevity */
+    body {
+      background-color: #c4a6a6;
+    }
   </style>
 </head>
 <body>
-  <h1>Math Quiz</h1>
+  <!-- Your existing HTML content here -->
 
+  <h1>Math Quiz</h1>
+  
   <div id="selected-options">
     <p>Selected Category: <span id="selected-category"></span></p>
     <p>Selected Difficulty: <span id="selected-difficulty"></span></p>
   </div>
-
+  
   <div id="timer-container">
     <p>Timer: <span id="timer">00:00</span></p>
   </div>
-
+  
   <div id="question-container">
     <p id="question"></p>
   </div>
-
+  
   <div id="answer-container">
     <input type="number" id="answer" placeholder="Enter your answer">
     <button onclick="checkAnswer()" class="button">Submit</button>
   </div>
-
+  
   <div id="result-container">
     <p id="result"></p>
     <button onclick="nextQuestion()" id="next-button" class="button" disabled>Next Question</button>
+    <button onclick="showHelp()" id="help-button" class="button" style="display: none;">Need Help?</button>
   </div>
-
+  
   <div id="quiz-result">
     <p id="points"></p>
     <p id="correct-answers"></p>
     <p id="incorrect-answers"></p>
+    <p id="feedback"></p> <!-- New div for the chatbot feedback -->
   </div>
-
+  
   <div id="return-button-container">
     <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="button">Return to Main Menu</button>
   </div>
-
+  
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     const difficulty = urlParams.get('difficulty');
+    console.log('Category:', category); // Debugging log
+    console.log('Difficulty:', difficulty); // Debugging log
     const showTimer = urlParams.get('showTimer') === 'true'; // Convert the showTimer parameter to a boolean value
 
+    // Your questions object and other variables here
     const questions = {
       addition: {
         easy: [
@@ -92,7 +102,6 @@
         ]
       }
     };
-
     let currentQuestion = 0;
     let score = 0;
     let correctAnswers = 0;
@@ -100,83 +109,112 @@
     let questionsAnswered = 0;
     let currentQuestions;
     let timerInterval; // Variable to store the interval ID of the timer
-
     function startQuiz() {
+      // Retrieve the stored current question index from Local Storage
+      const storedCurrentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+    
+      if (storedCurrentQuestionIndex !== null) {
+        currentQuestion = parseInt(storedCurrentQuestionIndex);
+      } else {
+        currentQuestion = 0;
+      }
+
+    
+      // Your startQuiz() function implementation
       currentQuestion = 0;
       score = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
       questionsAnswered = 0;
+    }
 
-      // Check if the category and difficulty values are valid
-      if (category && questions[category] && questions[category][difficulty]) {
-        currentQuestions = questions[category][difficulty];
-
-        showQuestion();
-
-        // Display the selected options
-        document.getElementById('selected-category').textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        document.getElementById('selected-difficulty').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-        
-        // Start the timer if showTimer is true
-        if (showTimer) {
-          startTimer();
+    // Your other functions here
+        // Check if the category and difficulty values are valid
+        if (category && questions[category] && questions[category][difficulty]) {
+          currentQuestions = questions[category][difficulty];
+  
+          showQuestion();
+  
+          // Display the selected options
+          document.getElementById('selected-category').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+          document.getElementById('selected-difficulty').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+          
+          // Start the timer if showTimer is true
+          if (showTimer) {
+            startTimer();
+          }
+        } else {
+          // Display an error message
+          const errorMessage = 'Invalid category or difficulty';
+          document.getElementById('question').textContent = errorMessage;
+          document.getElementById('result-container').style.display = 'none';
+          document.getElementById('answer-container').style.display = 'none';
+          document.getElementById('next-button').style.display = 'none';
         }
-      } else {
-        // Display an error message
-        const errorMessage = 'Invalid category or difficulty';
-        document.getElementById('question').textContent = errorMessage;
-        document.getElementById('result-container').style.display = 'none';
+      
+  
+      function showQuestion() {
+        const questionElement = document.getElementById('question');
+        questionElement.textContent = currentQuestions[currentQuestion].question;
+      }
+  
+      function checkAnswer() {
+        const userAnswer = document.getElementById('answer').value;
+        const correctAnswer = currentQuestions[currentQuestion].answer;
+      
+        const resultElement = document.getElementById('result');
+        if (userAnswer === correctAnswer) {
+          resultElement.textContent = 'Correct!';
+          score += 10;
+          correctAnswers++;
+        } else {
+          resultElement.textContent = 'Incorrect!';
+          incorrectAnswers++;
+      
+          // Show the help button for incorrect answers
+          document.getElementById('help-button').style.display = 'block';
+        }
+      
+        questionsAnswered++;
+      
+        // Display the result and next button
+        document.getElementById('result-container').style.display = 'block';
         document.getElementById('answer-container').style.display = 'none';
-        document.getElementById('next-button').style.display = 'none';
+        document.getElementById('next-button').disabled = false; // Re-enable the Next Question button
+        document.getElementById('points').textContent = `Points earned: ${score}`;
       }
-    }
-
-    function showQuestion() {
-      const questionElement = document.getElementById('question');
-      questionElement.textContent = currentQuestions[currentQuestion].question;
-    }
-
-    function checkAnswer() {
-      const userAnswer = document.getElementById('answer').value;
-      const correctAnswer = currentQuestions[currentQuestion].answer;
-
-      const resultElement = document.getElementById('result');
-      if (userAnswer === correctAnswer) {
-        resultElement.textContent = 'Correct!';
-        score += 10;
-        correctAnswers++;
-      } else {
-        resultElement.textContent = 'Incorrect!';
-        incorrectAnswers++;
+      
+      
+      function showHelp() {
+        // Redirect to the help page with selected category and difficulty as query parameters
+        window.location.href = `help.html?category=${category}&difficulty=${difficulty}`;
       }
-
-      questionsAnswered++;
-
-      document.getElementById('result-container').style.display = 'block';
-      document.getElementById('answer-container').style.display = 'none';
-      document.getElementById('next-button').disabled = false;
-      document.getElementById('points').textContent = `Points earned: ${score}`;
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
+      
+       
+  
+      function nextQuestion() {
+        // Store the current question index in Local Storage
+        localStorage.setItem('currentQuestionIndex', currentQuestion);
+      
+        currentQuestion++;
+      
+        if (currentQuestion < currentQuestions.length) {
+          // Clear the previous question and answer
+          document.getElementById('question').textContent = '';
+          document.getElementById('answer').value = '';
+          document.getElementById('result').textContent = '';
+      
+          showQuestion();
+          document.getElementById('result-container').style.display = 'none';
+          document.getElementById('answer-container').style.display = 'block';
+          document.getElementById('next-button').disabled = true;
+        } else {
+          // Quiz completed
+          showQuizResult();
+        }
+      }
+      
     
-      if (currentQuestion < currentQuestions.length) {
-        // Clear the previous question and answer
-        document.getElementById('question').textContent = '';
-        document.getElementById('answer').value = '';
-        document.getElementById('result').textContent = '';
-    
-        showQuestion();
-        document.getElementById('result-container').style.display = 'none';
-        document.getElementById('answer-container').style.display = 'block';
-        document.getElementById('next-button').disabled = true;
-      } else {
-        // Quiz completed
-        showQuizResult();
-      }
-    }
 
     function showQuizResult() {
       // Hide question and answer containers
@@ -220,14 +258,10 @@
         timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
       }, 1000);
     }
-    
     function returnToMainMenu() {
       // Redirect to the main menu or homepage
-      window.location.href = 'index.html';
+      window.location.href = 'main_menu.html';
     }
-
-    // Call the startQuiz function when the page loads
-    startQuiz();
   </script>
 </body>
 </html>

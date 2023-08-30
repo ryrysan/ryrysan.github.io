@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Register</title>
-  <!-- Add any CSS styles or external CSS links here -->
+  <link rel="stylesheet" type="text/css" href="index.css">
   <style>
     /* Styles omitted for brevity */
     body {
@@ -16,14 +16,16 @@
     <form id="registerForm">
       <label for="newUsername">Username:</label>
       <input type="text" id="newUsername" name="newUsername" required>
+      <div class="button-space"></div>
       <br>
       <label for="newPassword">Password:</label>
       <input type="password" id="newPassword" name="newPassword" required>
+      <div class="button-space"></div>
       <br>
-      <input type="submit" value="Register">
+      <input type="submit" value="Register" class="styled-button">
     </form>
     <p id="registerMessage"></p>
-    <button id="goToLoginButton" onclick="goToLogin()" style="display: none;">Go Back to Login</button>
+    <button id="goToLoginButton" onclick="goToLogin()" class="styled-button"> Go Back to Login Page</button>
   </div>
 
   <script>

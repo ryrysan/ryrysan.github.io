@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Help</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #c4a6a6;
+      padding: 20px;
+    }
+    .help-content {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="help-content">
+    <h1>Need Help?</h1>
+    <p>If you're having trouble with a question, here are some tips to consider:</p>
+    <ul>
+      <li>Double-check your calculations.</li>
+      <li>Read the question carefully to understand what's being asked.</li>
+      <li>Take your time and think through the problem step by step.</li>
+    </ul>
+    <p>If you're still stuck, don't hesitate to ask for assistance from your teacher or a classmate.</p>
+
+    <!-- Button to go back to quiz.html -->
+    <button id="go-back-button" onclick="goBackToQuiz()" class="button">Go Back to Quiz</button>
+
+  </div>
+  <script src="shared.js"></script>
+  <script>
+    var currentQuestions = [];
+    function goBackToQuiz() {
+      // Retrieve the stored current question index from Local Storage
+      const storedCurrentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+      currentQuestion = parseInt(storedCurrentQuestionIndex);
+    
+      // Check if the elements exist before trying to manipulate their styles
+      const questionContainer = document.getElementById('question-container');
+      const answerContainer = document.getElementById('answer-container');
+      
+      if (questionContainer && answerContainer) {
+        questionContainer.style.display = 'block';
+        answerContainer.style.display = 'block';
+      }
+    
+      showQuestion(currentQuestions);
+      document.getElementById('result-container').style.display = 'none';
+      document.getElementById('answer-container').style.display = 'block';
+      document.getElementById('next-button').disabled = true;
+    
+      // Redirect back to the quiz page (quiz.html) with selected category and difficulty as query parameters
+      window.location.href = `quiz.html?category=${getParameterByName('category')}&difficulty=${getParameterByName('difficulty')}`;
+  
+    }
+    
+    
+    // Function to extract query parameter values by name
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
+            results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    
+  </script>
+</body>
+</html>
