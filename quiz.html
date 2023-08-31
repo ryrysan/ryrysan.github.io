@@ -53,8 +53,6 @@
   <div id="return-button-container">
     <button onclick="returnToMainMenu()" id="return-button" style="display: none;" class="styled-button">Return to Main Menu</button>
   </div>
-
-  <div id="help-content" style="display: none;"></div>
   
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -282,12 +280,13 @@
 
     function checkFinalResult() {
       // Hide the question container and the "Check Your Result" button
-      document.getElementById('question-container').style.display = 'none';
+      document.getElementById('help-button').style.display = 'none';
       document.getElementById('check-result-button').style.display = 'none';
     
       showQuizResult();
     }
 
   </script>
+  <script src="ask_help.js"></script>
 </body>
 </html>
